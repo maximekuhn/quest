@@ -22,7 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for request in http_requests {
         println!("executing {} {}", request.method, request.url);
         match executor.execute(request) {
-            Ok(response) => println!("{:?}", response),
+            Ok(response) => println!("{}", response),
             Err(err) => println!("failed to execute request: {}", err),
         }
     }

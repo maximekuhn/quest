@@ -1,11 +1,9 @@
-[package]
-name = "quest"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+resolver = "2"
+members = ["quest", "quest-core"]
 
-[dependencies]
-clap = { version = "4.5.9", features = ["derive"] }
-dotenvy = "0.15.7"
-reqwest = { version = "0.12.5", features = ["blocking"] }
-thiserror = "1.0.62"
-url = "2.5.2"
+[workspace.dependencies]
+# workspace libraries
+quest-core = { path = "./quest-core" }
+
+# common dependencies, in alphabetical order

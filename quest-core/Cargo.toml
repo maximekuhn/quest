@@ -1,0 +1,10 @@
+[package]
+name = "quest-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenvy = "0.15.7"
+reqwest = { version = "0.12.5", features = ["blocking"] }
+thiserror = "1.0.62"
+url = "2.5.2"

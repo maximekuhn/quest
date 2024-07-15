@@ -1,21 +1,17 @@
 use clap::Parser;
+use quest_core::{env, executor, parser};
 
-mod args;
-mod env;
-mod executor;
-mod parser;
-mod request;
-mod response;
+mod opts;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // parse args from CLI
-    let args = args::Args::parse();
+    // parse options
+    let opts = opts::Opts::parse();
 
     // read input .http file
-    let file_content = std::fs::read_to_string(args.file)?;
+    let file_content = std::fs::read_to_string(opts.file)?;
 
     // read environment variables (from a .env file)
-    let env = env::Environment::init(args.dotenv)?;
+    let env = env::Environment::init(opts.dotenv)?;
 
     // replace variables, if any
     let file_content = env.replace_variables(file_content);

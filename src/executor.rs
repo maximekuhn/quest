@@ -1,5 +1,10 @@
 use std::str::FromStr;
 
+use reqwest::{
+    blocking::Body,
+    header::{HeaderName, HeaderValue},
+};
+
 use crate::{
     request::{HttpRequest, Method},
     response::{HttpResponse, StatusCode},
@@ -31,19 +36,32 @@ impl Executor {
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl Into<reqwest::blocking::Request> for HttpRequest {
     fn into(self) -> reqwest::blocking::Request {
         let method = self.method.into();
-        reqwest::blocking::Request::new(method, self.url)
+        let mut request = reqwest::blocking::Request::new(method, self.url);
+        for (header_name, header_value) in self.headers {
+            request.headers_mut().append(
+                HeaderName::from_str(&header_name).unwrap(),
+                HeaderValue::from_str(&header_value).unwrap(),
+            );
+        }
+        if let Some(body) = self.body {
+            *request.body_mut() = Some(Body::from(body));
+        }
+        request
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl Into<reqwest::Method> for Method {
     fn into(self) -> reqwest::Method {
         reqwest::Method::from_str(self.to_string().to_uppercase().as_str()).expect("valid method")
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl From<reqwest::blocking::Response> for HttpResponse {
     fn from(response: reqwest::blocking::Response) -> Self {
         Self {
@@ -58,6 +76,7 @@ impl From<reqwest::blocking::Response> for HttpResponse {
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl From<reqwest::StatusCode> for StatusCode {
     fn from(code: reqwest::StatusCode) -> Self {
         Self(code.as_u16())

@@ -15,7 +15,7 @@ impl Default for Environment {
 impl Environment {
     pub fn init(dot_env_file: Option<PathBuf>) -> Result<Self, io::Error> {
         // load environment files from an env file, if any
-        let _ = dotenvy::from_path(dot_env_file.unwrap_or(".env".try_into().expect("valid path")));
+        let _ = dotenvy::from_path(dot_env_file.unwrap_or(".env".into()));
         Ok(Self::default())
     }
 

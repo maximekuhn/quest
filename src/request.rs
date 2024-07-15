@@ -13,6 +13,7 @@ pub struct HttpRequest {
 #[derive(Debug)]
 pub enum Method {
     Get,
+    Post,
 }
 
 impl FromStr for Method {
@@ -21,6 +22,7 @@ impl FromStr for Method {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "get" => Ok(Self::Get),
+            "post" => Ok(Self::Post),
             _ => Err(format!("unknown HTTP method: '{s}'")),
         }
     }

@@ -1,0 +1,66 @@
+# This workflow runs everytime something is pushed to any branch.
+# It performs several checks:
+# - fmt: check if the code is correctly formatted according to rustfmt
+# - lint: check if there are no unhandled clippy warning(s)
+# - build: check if the code actually compiles
+# - test: run all tests
+#
+# It is heavily inspired by: https://github.com/jonhoo/rust-ci-conf/blob/main/.github/workflows/check.yml
+
+name: Rust CI
+
+# runs on a push on any branch
+on:
+  push:
+    branches:
+      - "**"
+
+# cancel outdated workflows on the same branch to spare some CI time
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    name: fmt
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: cargo fmt --check
+        run: cargo fmt --check
+
+  lint:
+    runs-on: ubuntu-latest
+    name: lint
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: cargo clippy -- -D warnings
+        run: cargo clippy -- -D warnings
+
+  build:
+    runs-on: ubuntu-latest
+    name: build
+    needs: [fmt, lint]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: cargo build --locked
+        run: cargo build --locked
+
+  test:
+    runs-on: ubuntu-latest
+    name: build
+    needs: [build]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: cargo test
+        run: cargo test

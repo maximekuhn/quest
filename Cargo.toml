@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["quest", "quest-core", "quest-tests"]
+members = ["quest", "quest-core"]
 
 [workspace.dependencies]
 # workspace libraries

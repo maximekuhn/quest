@@ -1,5 +1,0 @@
-### Most basic request
-GET http://127.0.0.1:54378/
-
-### Most basic request, with a '/' at the end
-GET http://127.0.0.1:54378/

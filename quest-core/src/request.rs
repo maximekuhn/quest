@@ -4,6 +4,7 @@ use thiserror::Error;
 use url::Url;
 
 pub struct HttpRequest {
+    pub name: String,
     pub method: Method,
     pub url: Url,
     pub headers: HashMap<String, String>,
@@ -63,6 +64,7 @@ impl FromStr for HttpRequest {
         let (method, url) = parse_first_line(first_line)?;
 
         Ok(Self {
+            name: format!("{} {}", method, url),
             method,
             url,
             headers: HashMap::new(),

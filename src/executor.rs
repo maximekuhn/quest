@@ -40,7 +40,7 @@ impl Into<reqwest::blocking::Request> for HttpRequest {
 
 impl Into<reqwest::Method> for Method {
     fn into(self) -> reqwest::Method {
-        reqwest::Method::from_str(self.to_string().as_str()).expect("valid method")
+        reqwest::Method::from_str(self.to_string().to_uppercase().as_str()).expect("valid method")
     }
 }
 

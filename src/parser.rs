@@ -22,7 +22,7 @@ pub fn parse_http_file(content: String) -> Result<Vec<HttpRequest>, HttpFilePars
         if section.is_empty() {
             continue;
         }
-        let mut section_lines = section.lines().into_iter();
+        let mut section_lines = section.lines();
         section_lines.next();
         let section_content = section_lines.collect();
         sections.push(section_content);

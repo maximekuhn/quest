@@ -8,4 +8,8 @@ pub struct Args {
     /// .http file to execute
     #[arg(short, long)]
     pub file: PathBuf,
+
+    /// environment variables file path
+    #[arg(short, long, default_value = None)]
+    pub dotenv: Option<PathBuf>,
 }

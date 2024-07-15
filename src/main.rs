@@ -1,6 +1,7 @@
 use clap::Parser;
 
 mod args;
+mod env;
 mod executor;
 mod parser;
 mod request;
@@ -12,6 +13,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // read input .http file
     let file_content = std::fs::read_to_string(args.file)?;
+
+    // read environment variables (from a .env file)
+    let env = env::Environment::init(args.dotenv)?;
+
+    // replace variables, if any
+    let file_content = env.replace_variables(file_content);
 
     // parse file content into HTTP request(s)
     let http_requests = parser::parse_http_file(file_content)?;

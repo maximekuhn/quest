@@ -1,2 +1,5 @@
 ### First request
 GET https://maximekuhn.dev
+
+### Second request
+GET https://{{host}}
